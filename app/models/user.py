@@ -15,6 +15,8 @@ class User(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     
     first_name: Mapped[str] = mapped_column(String(255), nullable=False)
     last_name: Mapped[str] = mapped_column(String(255), nullable=False)
+    balance: Mapped[int] = mapped_column(nullable=False, default=0)
+    
     
     hashed_password: Mapped[str | None] = mapped_column(String(255), nullable=True)
     
