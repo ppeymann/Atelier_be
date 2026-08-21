@@ -12,6 +12,7 @@ from app.utils.redis import get_redis_client, close_redis_client
 from app.db.session import engine
 from app.api.v1.health import router as health_router
 from app.api.v1.router import api_router
+from app.core.middleware import SecurityHeadersMiddleware
 
 setting = get_setting()
 logger = get_logger(__name__)
@@ -50,6 +51,8 @@ def create_app() -> FastAPI:
         allow_headers=["*"]
     )
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=setting.trusted_hosts_list)
+    app.add_middleware(SecurityHeadersMiddleware)
+    
 # --- Exception handlers ----------------------------------------------
 # TODO: add exception handler to this file
 

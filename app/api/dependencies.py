@@ -49,8 +49,6 @@ async def get_current_user(
     user = await repository.get_by_id(uuid.UUID(payload["sub"]))
     if user is None:
         raise InvalidTokenError("User no longer exists")
-    if not user.is_active:
-        raise InactiveUserError()
 
     return user
 
