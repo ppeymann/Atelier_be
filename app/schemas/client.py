@@ -40,3 +40,12 @@ class ClientRead(ClientBase):
     id: uuid.UUID
     created_at: datetime
     updated_at: datetime
+    
+class ClientListItem(ClientRead):
+    pass
+
+class PaginatedResponse(BaseModel):
+    items: list[ClientListItem]
+    total: int
+    page: int
+    page_size:int

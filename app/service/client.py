@@ -4,8 +4,8 @@ import uuid
 
 from app.repository.client import ClientRepository
 from app.models.client import Client
-from app.core.exceptions import UserNotFoundError
-from app.schemas.client import ClientCreate
+from app.core.exceptions import UserNotFoundError, AlreadyExistError
+from app.schemas.client import ClientCreate, ClientUpdate
 from app.core.exceptions import PhoneAlreadyCreateClientError
 from app.core.config import get_setting
 from app.core.logging import get_logger
@@ -19,7 +19,7 @@ class ClientService:
         self._repo: ClientRepository = repo
     
     async def get_by_id(self, client_id: uuid.UUID) -> Client:
-        client: Client | None = self._repo.get_by_id(client_id)
+        client: Client | None = await self._repo.get_by_id(client_id)
         if client is None:
             raise UserNotFoundError()
         return client
@@ -52,3 +52,22 @@ class ClientService:
             raise UserNotFoundError()
         
         await self._repo.delete(client)
+        
+    async def update(self, client_id: uuid.UUID, payload: ClientUpdate) -> Client:
+        client: Client | None = await self._repo.get_by_id(client_id)
+        if client is None:
+            raise UserNotFoundError()
+        update_data = payload.model_dump(exclude_unset=True)
+        phone = update_data.get("phone")
+        if phone is not None and phone != client.phone:
+            exist = await self._repo.get_by_phone(phone)
+            if exec is not None:
+                raise AlreadyExistError()
+        
+        client = await self._repo.update(client, **update_data)
+        logger.info("client_update", client_id=str(client_id))
+        return client
+    
+        
+        
+    
