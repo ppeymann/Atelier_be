@@ -4,6 +4,7 @@ import uuid
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.models.user import User
 
@@ -12,7 +13,11 @@ class UserRepository:
         self._session = session
         
     async def get_by_id(self, user_id: uuid.UUID) -> User | None:
-        return await self._session.get(User, user_id)
+        return await self._session.get(User, user_id, options=[
+            selectinload(User.clients)
+        ])
+
+        
 
     async def get_by_email(self, email: str) -> User | None:
         result = await self._session.execute(select(User).where(User.email == email))

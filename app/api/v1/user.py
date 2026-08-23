@@ -7,15 +7,15 @@ from fastapi import APIRouter, Depends, Query
 
 from app.api.dependencies import get_user_service
 from app.api.dependencies import CurrentUser
-from app.schemas.user import UserRead, UserListItem
+from app.schemas.user import UserRead, UserListItem,UserReadWithClients
 from app.schemas.common import PaginatedResponse
 from app.service.user import UserService
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-@router.get("/me", response_model=UserRead)
+@router.get("/me", response_model=UserReadWithClients)
 async def get_profile(current_user:CurrentUser) -> UserRead:
-    return UserRead.model_validate(current_user)
+    return UserReadWithClients.model_validate(current_user)
 
 @router.get("/{user_id}", response_model=UserRead)
 async def get_(user_id: uuid.UUID, user_service: Annotated[UserService, Depends(get_user_service)]):

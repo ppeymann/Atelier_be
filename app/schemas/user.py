@@ -5,6 +5,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
+from app.schemas.client import ClientListItem
+
 
 
 class UserBase(BaseModel):
@@ -12,6 +14,7 @@ class UserBase(BaseModel):
     first_name: str = Field(min_length=3, max_length=255)
     last_name: str = Field(min_length=3, max_length=255)
     phone: str = Field(min_length=11, max_length=11, pattern=r"^09\d{9}$")
+    
     
 class UserCreate(UserBase):
     password: str = Field(
@@ -35,3 +38,6 @@ class UserRead(UserBase):
     
 class UserListItem(UserRead):
     pass
+
+class UserReadWithClients(UserRead):
+    clients: list[ClientListItem] = []

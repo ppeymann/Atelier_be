@@ -27,7 +27,7 @@ class ClientService:
     async def list_clients(self, *, page: int, page_size: int) -> tuple[list[Client], int]:
         return await self._repo.list_paginated(page=page, page_size=page_size)
     
-    async def create(self, payload: ClientCreate) -> Client:
+    async def create(self, payload: ClientCreate, user_id: uuid.UUID) -> Client:
         exist = await self._repo.get_by_phone(payload.phone)
         if exist is not None:
             raise PhoneAlreadyCreateClientError()
@@ -39,7 +39,8 @@ class ClientService:
             birth_day = payload.birth_day,
             city=payload.city,
             preferred_style=payload.preferred_style,
-            notes=payload.notes
+            notes=payload.notes,
+            user_id=user_id
         )
         
         client = await self._repo.create(client)
