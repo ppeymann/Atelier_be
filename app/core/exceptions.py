@@ -58,6 +58,12 @@ class EmailAlreadyRegisteredError(AlreadyExistError):
     def __init__(self) -> None:
         super().__init__("An account with this email already exists")
         
+class PhoneAlreadyCreateClientError(AlreadyExistError):
+    error_code = "PHONE_ALREADY_CREATE"
+    
+    def __init__(self) -> None:
+        super().__init__("A client with this phone already exists")
+        
 class PasswordNotMatched(AppException):
     status_code= status.HTTP_422_UNPROCESSABLE_CONTENT
     error_code= "Password not matched"

@@ -15,11 +15,16 @@ from app.models.user import User
 from app.repository.user import UserRepository
 from app.service.user import UserService
 from app.utils.redis import RedisService
+from app.repository.client import ClientRepository
+from app.service.client import ClientService
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=True)
 
 def get_user_repository(session: Annotated[AsyncSession, Depends(get_db)]) -> UserRepository:
     return UserRepository(session)
+
+def get_client_repository(session: Annotated[AsyncSession, Depends(get_db)]) -> ClientRepository:
+    return ClientRepository(session)
 
 def get_redis_service() -> RedisService:
     return RedisService()
@@ -34,6 +39,13 @@ def get_user_service(
     repository: Annotated[UserRepository, Depends(get_user_repository)],
 ) -> UserService:
     return UserService(repository)
+
+def get_client_service(
+    repository: Annotated[ClientRepository, Depends(get_client_repository)],
+    redis: Annotated[RedisService, Depends(get_redis_service)]
+) :
+    return ClientService(repo=repository)
+    
 
 # --- Current user resolution -------------------------------------------------
 async def get_current_user(

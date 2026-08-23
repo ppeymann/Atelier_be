@@ -14,6 +14,7 @@ from alembic import context
 from app.core.config import get_setting
 from app.db.base import Base
 from app.models.user import User
+from app.models.client import Client
 
 config = context.config
 

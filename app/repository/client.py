@@ -41,3 +41,7 @@ class ClientRepository:
     async def delete(self, client: Client) -> None:
         await self._session.delete(client)
         await self._session.flush()
+        
+    async def get_by_phone(self, phone: str) -> Client | None:
+        result = await self._session.execute(select(Client).where(Client.phone == phone))
+        return result.scalar_one_or_none()
