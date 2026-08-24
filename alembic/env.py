@@ -15,6 +15,10 @@ from app.core.config import get_setting
 from app.db.base import Base
 from app.models.user import User
 from app.models.client import Client
+from app.models.order import Order
+from app.models.lower_measurement import LowerMeasurement
+from app.models.measurement import OrderMeasurement
+from app.models.upper_measurement import UpperMeasurement
 
 config = context.config
 

@@ -21,6 +21,11 @@ class Client(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     preferred_style: Mapped[str | None] = mapped_column(String(255), nullable=True)
     notes: Mapped[str | None] = mapped_column(String(255), nullable=True)
     is_vip: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    
+    # Relations
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     owner: Mapped["User"] = relationship(back_populates="clients")
-    
+    orders: Mapped[list["Order"]] = relationship(
+        back_populates="client",
+        cascade="all, delete-orphan"
+    )
