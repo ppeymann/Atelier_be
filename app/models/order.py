@@ -25,7 +25,7 @@ class Order(Base, TimestampMixin, UUIDPrimaryKeyMixin):
     __tablename__ = "orders"
     
     customer_nots: Mapped[str] = mapped_column(String(255))
-    price: Mapped[int] = mapped_column(nullable=False, default=0)
+    price: Mapped[float] = mapped_column(nullable=False, default=0.00)
     delivery: Mapped[date | None] = mapped_column(nullable=True)
     
     
