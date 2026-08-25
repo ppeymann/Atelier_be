@@ -45,6 +45,13 @@ class OrderRepository:
         result = await self._session.execute(stmt)
         return result.scalars().all()
     
+    async def count(self, *, client_id: uuid.UUID | None = None) -> int:
+        stmt = select(func.count()).select_from(Order)
+        if client_id is not None:
+            stmt = stmt.where(Order.client_id == client_id)
+        result = await self._session.execute(stmt)
+        return result.scalar_one()
+    
     async def update(self, order_id: uuid.UUID, data: Order, **fields: object) -> Order | None:
         order = await self.get(order_id)
         if order is None:

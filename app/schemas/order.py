@@ -50,3 +50,23 @@ class OrderRead(OrderBase):
     client_id: uuid.UUID
     created_at: datetime
     updated_at: datetime
+
+class OrderPage(BaseModel):
+    items: list[OrderRead]
+    page: int = Field(..., ge=1)
+    page_size: int = Field(..., ge=1, le=100)
+    total: int = Field(..., ge=0)
+    
+    @property
+    def total_page(self) -> int:
+        if self.page_size == 0:
+            return 0
+        return (self.total + self.page_size - 1) // self.page_size
+    
+    @property
+    def has_next(self) -> bool:
+        return self.page * self.page_size < self.total
+    
+    @property
+    def has_prev(self) -> bool:
+        return self.page > 1

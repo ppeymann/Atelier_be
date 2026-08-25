@@ -7,6 +7,7 @@ from app.models.user import User
 from app.core.exceptions import UserNotFoundError
 from app.schemas.user import UserCreate
 
+
 class UserService:
     def __init__(self, repository: UserRepository) -> None:
         self._repository = repository

@@ -17,6 +17,7 @@ from app.service.user import UserService
 from app.utils.redis import RedisService
 from app.repository.client import ClientRepository
 from app.service.client import ClientService
+from app.repository.order import OrderRepository
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=True)
 
@@ -25,6 +26,9 @@ def get_user_repository(session: Annotated[AsyncSession, Depends(get_db)]) -> Us
 
 def get_client_repository(session: Annotated[AsyncSession, Depends(get_db)]) -> ClientRepository:
     return ClientRepository(session)
+
+def get_order_repository(session: Annotated[AsyncSession, Depends(get_db)]) -> OrderRepository:
+    return OrderRepository(session)
 
 def get_redis_service() -> RedisService:
     return RedisService()

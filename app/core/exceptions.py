@@ -28,6 +28,12 @@ class UserNotFoundError(NotFoundError):
     
     def __init__(self) -> None:
         super().__init__("User not found")
+
+class PageMustBiggerThan(AppException):
+    error_code = "PAGE_MUST_BIGGER_THAN_ONE"
+    
+class PageSizeNotValid(AppException):
+    error_code = "PAGE_SIZE_NOT_VALID"
         
 class AlreadyExistError(AppException):
     status_code = status.HTTP_409_CONFLICT
