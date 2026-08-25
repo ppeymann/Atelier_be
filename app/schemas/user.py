@@ -16,6 +16,7 @@ class UserBase(BaseModel):
     phone: str = Field(min_length=11, max_length=11, pattern=r"^09\d{9}$")
     
     
+    
 class UserCreate(UserBase):
     password: str = Field(
         min_length=8,
