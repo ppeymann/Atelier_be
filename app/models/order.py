@@ -29,7 +29,7 @@ class Order(Base, TimestampMixin, UUIDPrimaryKeyMixin):
     delivery: Mapped[date | None] = mapped_column(nullable=True)
     
     
-    deposit: Mapped[int] = mapped_column(nullable=False)
+    deposit: Mapped[float] = mapped_column(nullable=False)
     __table_args__ = (
         CheckConstraint("deposit >= 0 AND deposit <= 100", name="check_deposit_range"),
     )
