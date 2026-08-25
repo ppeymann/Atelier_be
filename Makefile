@@ -31,3 +31,9 @@ migration:
 
 shell:
 	$(PYTHON)
+
+dev_compose:
+	docker compose -f docker-compose.dev.yml up -d
+
+prod_compose:
+	docker compose -f docker-compose.yml up -d
