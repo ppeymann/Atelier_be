@@ -18,6 +18,7 @@ from app.utils.redis import RedisService
 from app.repository.client import ClientRepository
 from app.service.client import ClientService
 from app.repository.order import OrderRepository
+from app.service.order import OrderService
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=True)
 
@@ -49,6 +50,12 @@ def get_client_service(
     redis: Annotated[RedisService, Depends(get_redis_service)]
 ) :
     return ClientService(repo=repository)
+
+def get_order_service(
+    repository: Annotated[OrderRepository, Depends(get_order_repository)],
+    redis: Annotated[RedisService, Depends(get_redis_service)]
+):
+    return OrderService(repository)
     
 
 # --- Current user resolution -------------------------------------------------
